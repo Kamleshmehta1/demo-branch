@@ -2,21 +2,25 @@ pipeline {
   agent any
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
       }
     }
 
-    stage('Install Dependencies') {
-      steps {
-        sh 'npm install'
-      }
-    }
-
     stage('Build React App') {
+      agent {
+        docker {
+          image 'node:20-alpine'
+        }
+      }
       steps {
-        sh 'npm run build'
+        sh '''
+          node -v
+          npm install
+          npm run build
+        '''
       }
     }
   }
