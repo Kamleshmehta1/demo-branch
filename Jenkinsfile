@@ -9,19 +9,15 @@ pipeline {
       }
     }
 
-    stage('Build React App') {
-      agent {
-        docker {
-          image 'node:20-alpine'
-          args '-u root'
-        }
-      }
+    stage('Install Dependencies') {
       steps {
-        sh '''
-          node -v
-          npm install
-          npm run build
-        '''
+        sh 'npm install'
+      }
+    }
+
+    stage('Build React App') {
+      steps {
+        sh 'npm run build'
       }
     }
   }
